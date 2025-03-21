@@ -26,10 +26,12 @@ builder.Services.AddDbContext<AmadeusDbContext>(options =>
 
 // Agregar los servicios de la aplicación
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<QuestionService>();
  
  
 // Agregar los repositorios de la aplicación
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<QuestionService>();
 
 
 var app = builder.Build();
