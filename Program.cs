@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Amadeus.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +23,14 @@ builder.Services.AddDbContext<AmadeusDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
 // Agregar los servicios de la aplicación
-
-
+builder.Services.AddScoped<UserService>();
+ 
+ 
 // Agregar los repositorios de la aplicación
+builder.Services.AddScoped<UserRepository>();
+
 
 var app = builder.Build();
 
