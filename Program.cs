@@ -32,7 +32,7 @@ builder.Services.AddScoped<QuestionOptionService>();
 
 // Agregar los repositorios de la aplicación
 builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<QuestionService>();
+builder.Services.AddScoped<QuestionRepository>();
 builder.Services.AddScoped<QuestionOptionRepository>();
 
 
