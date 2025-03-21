@@ -5,6 +5,9 @@ project.lock.json
 *.pyc
 nupkg/
 
+# Ignore appsettings.Development.json
+appsettings.Development.json
+
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json
