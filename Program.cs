@@ -17,7 +17,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "Amadeus", Version = "v1" });
 });
 
-// Agregar los servicios de la base de datos
+
+
 builder.Services.AddDbContext<AmadeusDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -27,11 +28,12 @@ builder.Services.AddDbContext<AmadeusDbContext>(options =>
 // Agregar los servicios de la aplicación
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<QuestionService>();
- 
- 
+builder.Services.AddScoped<QuestionOptionService>();
+
 // Agregar los repositorios de la aplicación
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<QuestionService>();
+builder.Services.AddScoped<QuestionOptionRepository>();
 
 
 var app = builder.Build();
