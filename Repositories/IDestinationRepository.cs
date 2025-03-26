@@ -9,5 +9,7 @@ namespace AMADEUSAPI.Repositories
         Task AddDestination(Destination destination);
         Task UpdateDestination(Destination destination);
         Task DeleteDestination(int id);
+        Task<Destination?> GetDestinationByCombination(string combination);
+        
     }
 }
