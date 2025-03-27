@@ -67,6 +67,12 @@ namespace AMADEUSAPI.Repositories
         _context.Destinations.Remove(destination);
         await _context.SaveChangesAsync();
         }
+
+         public async Task<Destination?> GetDestinationByCombination(string combination)
+        {
+            return await _context.Destinations
+                .FirstOrDefaultAsync(d => d.Combination == combination);
+        }
     }
 }
     

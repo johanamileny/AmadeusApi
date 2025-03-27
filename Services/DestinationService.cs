@@ -28,17 +28,25 @@ namespace AMADEUSAPI.Services
 
 
 
-        public async Task CreateDestination(List<int> questionOptionIds, int firstCityId, int secondCityId)
-        {
-            string hash = GenerateHash(questionOptionIds);
-         var destination = new Destination
-            {
-                Combination = hash,
-                FirstCityId = firstCityId,
-                SecondCityId = secondCityId
-            };
-            await _repository.AddDestination(destination);
-        }
+       public async Task CreateDestination(List<int> questionOptionIds, int firstCityId, int secondCityId)
+{
+    string hash = GenerateHash(questionOptionIds);
+
+    // Verificar si la combinación ya existe en la BD
+    var existingDestination = await _repository.GetDestinationByCombination(hash);
+    if (existingDestination != null)
+    {
+        throw new InvalidOperationException("Esta combinación ya existe.");
+    }
+
+    var destination = new Destination
+    {
+        Combination = hash,
+        FirstCityId = firstCityId,
+        SecondCityId = secondCityId
+    };
+    await _repository.AddDestination(destination);
+}
 
         private string GenerateHash(List<int> values)
         {
