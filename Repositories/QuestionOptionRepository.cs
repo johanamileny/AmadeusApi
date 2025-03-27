@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
+namespace Amadeus.Repositories;
+
 public class QuestionOptionRepository
 {
     private readonly AmadeusDbContext _context;

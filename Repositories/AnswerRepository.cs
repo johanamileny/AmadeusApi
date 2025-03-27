@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+namespace Amadeus.Repositories;
+
 public class AnswerRepository : IAnswerRepository
 {
     private readonly AmadeusDbContext _context;

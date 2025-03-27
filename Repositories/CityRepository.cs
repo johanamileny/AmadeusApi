@@ -1,12 +1,13 @@
-using AMADEUSAPI.Data;
 using AMADEUSAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
+namespace Amadeus.Repositories;
+
 public class CityRepository 
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AmadeusDbContext _context;
 
-    public CityRepository(ApplicationDbContext context)
+    public CityRepository(AmadeusDbContext context)
     {
         _context = context;
     }

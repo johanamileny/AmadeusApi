@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+namespace Amadeus.Repositories;
+
 public interface IAnswerRepository
 {
     Task<IEnumerable<Answer>> GetAllAsync();
