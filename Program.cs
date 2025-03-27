@@ -10,10 +10,26 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-builder.Services.AddScoped<IDestinationRepository, DestinationRepository>();
+// Agregar los servicios de la aplicación
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<QuestionService>();
+builder.Services.AddScoped<QuestionOptionService>();
+builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<IDestinationService, DestinationService>();
 builder.Services.AddScoped<CityService>(); 
+
+
+
+// Agregar los repositorios de la aplicación
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<QuestionRepository>();
+builder.Services.AddScoped<QuestionOptionRepository>();
+builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
+builder.Services.AddScoped<IDestinationRepository, DestinationRepository>();
 builder.Services.AddScoped<CityRepository>(); 
+
+
+
 
 builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
