@@ -1,3 +1,5 @@
+using Amadeus.Repositories;
+
 public class QuestionOptionService
 {
     private readonly QuestionOptionRepository _repository;

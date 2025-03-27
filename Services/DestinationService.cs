@@ -1,5 +1,5 @@
+using Amadeus.Repositories;
 using AMADEUSAPI.Models;
-using AMADEUSAPI.Repositories;
 using System.Security.Cryptography;
 using System.Text;
 

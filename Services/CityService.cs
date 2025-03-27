@@ -1,4 +1,4 @@
-using AMADEUSAPI.Data;
+using Amadeus.Repositories;
 using AMADEUSAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
