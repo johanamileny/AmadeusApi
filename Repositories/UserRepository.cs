@@ -26,12 +26,12 @@ public class UserRepository
 
     public async Task<User> GetUserEmail(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.email == email);
+        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 
     public async Task<User> GetUserName(string full_name)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.full_name.Contains(full_name));
+        return await _context.Users.FirstOrDefaultAsync(x => x.Full_name.Contains(full_name));
     }
 
 

@@ -27,6 +27,24 @@ namespace AMADEUSAPI.Controllers {
             return Ok(await _service.GetCityById(id));
         }
 
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            try
+            {
+                var city = await _service.GetCityByName(name);
+                if (city == null)
+                {
+                    return NotFound($"No city found with name: {name}");
+                }
+                return Ok(city);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpPost("new")]
         public async Task<IActionResult> Create([FromBody] CreateCityRequest request)
         {

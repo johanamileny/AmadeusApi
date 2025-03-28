@@ -2,11 +2,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class QuestionOption
 {
-    [Column("id")]
     public int Id { get; set; } // PK
-    [Column("question_id")]
     public int QuestionId { get; set; } // FK
-    [Column("description")]
+    public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string image {get; set;} = string.Empty;
+    public string Image {get; set;} = string.Empty;
 }

@@ -26,7 +26,7 @@ public class QuestionRepository
 
     public async Task<Question> GetQuestionText(string question_text)
     {
-        return await _context.Questions.FirstOrDefaultAsync(x => x.question_text == question_text);
+        return await _context.Questions.FirstOrDefaultAsync(x => x.Question_text == question_text);
     }
 
    

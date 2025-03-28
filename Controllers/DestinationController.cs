@@ -23,7 +23,7 @@ namespace AMADEUSAPI.Controllers
             return Ok(await _service.GetAllDestinations());
         }
 
-         [HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _service.GetDestinationById(id));
@@ -36,37 +36,37 @@ namespace AMADEUSAPI.Controllers
             return Ok(new { message = "Destination created successfully" });
         }
 
-         [HttpPut("update/{id}")]
-public async Task<IActionResult> UpdateDestination(int id, [FromBody] Destination destination)
-{
-    if (id != destination.Id)
-    {
-        return BadRequest("El ID de la URL no coincide con el ID del cuerpo de la solicitud.");
-    }
-
-    try
-    {
-        await _service.UpdateDestination(destination);
-        return NoContent(); // Código 204 (Actualización exitosa sin contenido de respuesta)
-    }
-    catch (KeyNotFoundException ex)
-    {
-        return NotFound(ex.Message);
-    }
-    }
-
-    [HttpDelete("remove/{id}")]
-    public async Task<IActionResult> DeleteDestination(int id)
-    {
-        try
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateDestination(int id, [FromBody] Destination destination)
         {
-            await _service.DeleteDestination(id);
-            return NoContent(); // Código 204 (Eliminación exitosa sin contenido de respuesta)
+            if (id != destination.Id)
+            {
+                return BadRequest("El ID de la URL no coincide con el ID del cuerpo de la solicitud.");
+            }
+
+            try
+            {
+                await _service.UpdateDestination(destination);
+                return NoContent(); // Código 204 (Actualización exitosa sin contenido de respuesta)
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
-        catch (KeyNotFoundException ex)
+
+        [HttpDelete("remove/{id}")]
+        public async Task<IActionResult> DeleteDestination(int id)
         {
-            return NotFound(ex.Message);
+            try
+            {
+                await _service.DeleteDestination(id);
+                return NoContent(); // Código 204 (Eliminación exitosa sin contenido de respuesta)
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
-}
 }

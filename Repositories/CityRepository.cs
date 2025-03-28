@@ -57,4 +57,11 @@ public class CityRepository
         _context.Cities.Remove(city);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<City?> GetCityByName(string name)
+    {
+        return await _context.Cities
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Description.Contains(name));
+    }
 }

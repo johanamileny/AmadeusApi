@@ -25,82 +25,96 @@ namespace AmadeusApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Attraction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("text");
+
+                    b.Property<string>("Food")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("city", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("AMADEUSAPI.Models.Destination", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Combination")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("combination");
+                        .HasColumnType("text");
 
                     b.Property<int>("FirstCityId")
-                        .HasColumnType("integer")
-                        .HasColumnName("first_city_id");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SecondCityId")
-                        .HasColumnType("integer")
-                        .HasColumnName("second_city_id");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("destination", (string)null);
+                    b.ToTable("Destinations");
                 });
 
             modelBuilder.Entity("Amadeus.Models.Question", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("question_text")
+                    b.Property<string>("Question_text")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Amadeus.Models.User", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("full_name")
+                    b.Property<string>("Full_name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -109,26 +123,21 @@ namespace AmadeusApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("QuestionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("question_id");
+                        .HasColumnType("integer");
 
                     b.Property<int>("QuestionOptionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("question_option_id");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -139,21 +148,22 @@ namespace AmadeusApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("text");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("QuestionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("question_id");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("image")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
