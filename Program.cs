@@ -1,8 +1,26 @@
 using Amadeus.Repositories;
 using AMADEUSAPI.Services;
+using AmadeusApi.Utils;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using Amadeus.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Image Path - using project directory
+string contentRootPath = builder.Environment.ContentRootPath;
+string imageBasePath = Path.Combine(contentRootPath, "Resources", "img");
+
+// Ensure directory exists
+if (!Directory.Exists(imageBasePath))
+{
+    Directory.CreateDirectory(imageBasePath);
+}
+
+
+Console.WriteLine($"Image base path: {imageBasePath}");
+ImageConverter.Initialize(imageBasePath, builder.Services.BuildServiceProvider().GetService<ILoggerFactory>());
+
 
 // Add CORS policy
 builder.Services.AddCors(options =>

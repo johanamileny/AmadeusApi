@@ -21,6 +21,19 @@ public class CityService
         return await _cityRepository.GetCityById(id);
     }
 
+    public async Task<City> GetCityByName(string name)
+    {
+        var city = await _cityRepository.GetCityByName(name);
+        
+        if (city != null && !string.IsNullOrEmpty(city.ImagePath))
+        {
+            // Convert image to base64 using existing utility
+            city.ImagePath = AmadeusApi.Utils.ImageConverter.ConvertImagePathToBase64(city.ImagePath);
+        }
+        
+        return city ?? throw new KeyNotFoundException($"City with name {name} not found.");
+    }
+
     public async Task CreateCity(string description)
     {
         var city = new City { Description = description };

@@ -1,54 +1,81 @@
+using Amadeus.Services;
+using Amadeus.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class QuestionOptionController : ControllerBase
+namespace AmadeusApi.Controllers
 {
-    private readonly QuestionOptionService _service;
-
-    public QuestionOptionController(QuestionOptionService service)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class QuestionOptionController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly QuestionOptionService _questionOptionService;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var questionOptions = await _service.GetAllAsync();
-        return Ok(questionOptions);
-    }
+        public QuestionOptionController(QuestionOptionService questionOptionService)
+        {
+            _questionOptionService = questionOptionService;
+        }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var questionOption = await _service.GetByIdAsync(id);
-        if (questionOption == null) return NotFound();
-        return Ok(questionOption);
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var questionOptions = await _questionOptionService.GetAllAsync();
+            return Ok(questionOptions);
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Add([FromBody] QuestionOption questionOption)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-        await _service.AddAsync(questionOption);
-        return CreatedAtAction(nameof(GetById), new { id = questionOption.Id }, questionOption);
-    }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var questionOption = await _questionOptionService.GetByIdAsync(id);
+            if (questionOption == null) return NotFound();
+            return Ok(questionOption);
+        }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] QuestionOption questionOption)
-    {
-        if (id != questionOption.Id) return BadRequest();
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-        await _service.UpdateAsync(questionOption);
-        return NoContent();
-    }
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] QuestionOption questionOption)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            await _questionOptionService.AddAsync(questionOption);
+            return CreatedAtAction(nameof(GetById), new { id = questionOption.Id }, questionOption);
+        }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var questionOption = await _service.GetByIdAsync(id);
-        if (questionOption == null) return NotFound();
-        await _service.DeleteAsync(id);
-        return NoContent();
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] QuestionOption questionOption)
+        {
+            if (id != questionOption.Id) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            await _questionOptionService.UpdateAsync(questionOption);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var questionOption = await _questionOptionService.GetByIdAsync(id);
+            if (questionOption == null) return NotFound();
+            await _questionOptionService.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [HttpGet("ByQuestion/{questionId}")]
+        public async Task<ActionResult<IEnumerable<QuestionOption>>> GetByQuestionId(int questionId)
+        {
+            try
+            {
+                var options = await _questionOptionService.GetOptionsByQuestionIdAsync(questionId);
+                
+                if (options == null || !options.Any())
+                {
+                    return NotFound($"No options found for question with ID: {questionId}");
+                }
+                
+                return Ok(options);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
