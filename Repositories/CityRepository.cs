@@ -1,67 +1,59 @@
-using AMADEUSAPI.Models;
+using AmadeusApi.Data;
+using AmadeusApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Amadeus.Repositories;
-
-public class CityRepository 
+namespace AmadeusApi.Repositories
 {
-    private readonly AmadeusDbContext _context;
-
-    public CityRepository(AmadeusDbContext context)
+    public class CityRepository
     {
-        _context = context;
-    }
+        private readonly AmadeusDbContext _context;
 
-    public async Task<IEnumerable<City>> GetAllCities()
-    {
-        return await _context.Cities.ToListAsync();
-    }
-
-    public async Task<City> GetCityById(int id)
-    {
-        var city = await _context.Cities.FindAsync(id);
-        if (city == null)
+        public CityRepository(AmadeusDbContext context)
         {
-            throw new KeyNotFoundException($"City with id {id} not found.");
-        }
-        return city;
-    }
-
-    public async Task AddCity(City city)
-    {
-        _context.Cities.Add(city);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateCity(City city)
-    {
-        var existingCity = await _context.Cities.AsNoTracking()
-        .FirstOrDefaultAsync(c => c.Id == city.Id);
-
-        if (existingCity == null)
-        {
-            throw new KeyNotFoundException($"City with id {city.Id} not found.");
+            _context = context;
         }
 
-        _context.Cities.Update(city);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteCity(int id)
-    {
-        var city = await _context.Cities.FindAsync(id);
-        if (city == null)
+        // CityService.GetAllCitiesAsync
+        public async Task<List<City>> GetAllCitiesAsync()
         {
-            throw new KeyNotFoundException($"City with id {id} not found.");
+            return await _context.Cities
+                .OrderBy(c => c.Country)
+                .ThenBy(c => c.Language)
+                .ToListAsync();
         }
-        _context.Cities.Remove(city);
-        await _context.SaveChangesAsync();
-    }
 
-    public async Task<City?> GetCityByName(string name)
-    {
-        return await _context.Cities
-            .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Description.Contains(name));
+        // CityService.GetByNameAsync -> usamos Description como “nombre”
+        public async Task<City?> GetByNameAsync(string name)
+        {
+            return await _context.Cities
+                .FirstOrDefaultAsync(c => c.Description == name);
+        }
+
+        // CityService.GetByIdAsync
+        public async Task<City?> GetByIdAsync(int id)
+        {
+            return await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        // CityService.CreateAsync
+        public async Task<City> CreateAsync(City city)
+        {
+            _context.Cities.Add(city);
+            await _context.SaveChangesAsync();
+            return city;
+        }
+
+        // Utilidades opcionales
+        public async Task<List<City>> GetByCountryAsync(string country) =>
+            await _context.Cities.Where(c => c.Country == country).ToListAsync();
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var city = await _context.Cities.FindAsync(id);
+            if (city == null) return false;
+            _context.Cities.Remove(city);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

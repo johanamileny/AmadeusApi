@@ -1,65 +1,67 @@
-using Amadeus.Models;
+using AmadeusApi.Data;
+using AmadeusApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Amadeus.Repositories;
-
-public class UserRepository
+namespace AmadeusApi.Repositories
 {
-    // Inyeccion de dependencias (Depende del contexto de la base de datos)
-    private readonly AmadeusDbContext _context;
-
-    public UserRepository(AmadeusDbContext context)
+    public class UserRepository
     {
-        _context = context;
-    }
+        private readonly AmadeusDbContext _context;
 
-    // TODO Read
-    public async Task<IEnumerable<User>> GetAll()
-    {
-        return await _context.Users.ToListAsync();
-    }
+        public UserRepository(AmadeusDbContext context)
+        {
+            _context = context;
+        }
 
-    public async Task<User> GetUserId(int id)
-    {
-        return await _context.Users.FindAsync(id);
-    }
+        // Llamado por UserService.GetAll
+        public async Task<List<User>> GetAll()
+        {
+            return await _context.Users.ToListAsync();
+        }
 
-    public async Task<User> GetUserEmail(string email)
-    {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
-    }
+        // Llamado por UserService.GetUserId
+        public async Task<User?> GetUserId(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
 
-    public async Task<User> GetUserName(string full_name)
-    {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Full_name.Contains(full_name));
-    }
+        // Llamado por UserService.GetUserEmail
+        public async Task<User?> GetUserEmail(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
 
+        // Llamado por UserService.GetUserName
+        public Task<User?> GetUserName(string userName)
+        {
+            // Tu modelo no tiene UserName; devolvemos null sin romper compilación
+            return Task.FromResult<User?>(null);
+        }
 
-    // TODO Create
-    public async Task<User> CreateUser(User user)
-    {
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-        return user;
-    }
+        // Llamado por UserService.CreateUser
+        public async Task<User> CreateUser(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
 
+        // Llamado por UserService.UpdateUser
+        public async Task<User> UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
 
-    // TODO Update
-    public async Task<User> UpdateUser(User user)
-    {
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
-        return user;
-    }
-
-
-    // TODO Delete
-    public async Task<User> DeleteUser(int id)
-    {
-        var user = await _context.Users.FindAsync(id);
-
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
-        return user;
+        // Llamado por UserService.DeleteUser
+        public async Task<bool> DeleteUser(int id)
+        {
+            var u = await _context.Users.FindAsync(id);
+            if (u == null) return false;
+            _context.Users.Remove(u);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

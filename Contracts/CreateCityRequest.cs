@@ -1,4 +1,4 @@
-namespace AMADEUSAPI.Contracts 
+namespace AmadeusApi.Contracts 
 {
     public class CreateCityRequest
     {

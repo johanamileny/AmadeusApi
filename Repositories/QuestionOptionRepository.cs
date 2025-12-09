@@ -1,11 +1,8 @@
-using Amadeus.Models;
-using AmadeusApi.Utils;
+using AmadeusApi.Data;
+using AmadeusApi.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Amadeus.Repositories
+namespace AmadeusApi.Repositories
 {
     public class QuestionOptionRepository
     {
@@ -16,70 +13,44 @@ namespace Amadeus.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<QuestionOption>> GetAllAsync()
+        public async Task<List<QuestionOption>> GetAllAsync()
         {
-            var options = await _context.QuestionOptions.ToListAsync();
-            ConvertImagesToBase64(options);
-            return options;
+            return await _context.QuestionOptions.ToListAsync();
         }
 
-        public async Task<QuestionOption> GetByIdAsync(int id)
+        public async Task<QuestionOption?> GetByIdAsync(int id)
         {
-            var option = await _context.QuestionOptions.FindAsync(id);
-            if (option != null)
-            {
-                ConvertImageToBase64(option);
-            }
+            return await _context.QuestionOptions.FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<List<QuestionOption>> GetByQuestionIdAsync(int questionId)
+        {
+            return await _context.QuestionOptions
+                .Where(o => o.QuestionId == questionId)
+                .ToListAsync();
+        }
+
+        public async Task<QuestionOption> AddAsync(QuestionOption option)
+        {
+            _context.QuestionOptions.Add(option);
+            await _context.SaveChangesAsync();
             return option;
         }
 
-        public async Task<IEnumerable<QuestionOption>> GetByQuestionIdAsync(int questionId)
+        public async Task<QuestionOption> UpdateAsync(QuestionOption option)
         {
-            var options = await _context.QuestionOptions
-                .Where(option => option.QuestionId == questionId)
-                .ToListAsync();
-            
-            ConvertImagesToBase64(options);
-            return options;
-        }
-
-        public async Task AddAsync(QuestionOption questionOption)
-        {
-            await _context.QuestionOptions.AddAsync(questionOption);
+            _context.QuestionOptions.Update(option);
             await _context.SaveChangesAsync();
+            return option;
         }
 
-        public async Task UpdateAsync(QuestionOption questionOption)
+        public async Task<bool> DeleteAsync(int id)
         {
-            _context.QuestionOptions.Update(questionOption);
+            var opt = await _context.QuestionOptions.FindAsync(id);
+            if (opt == null) return false;
+            _context.QuestionOptions.Remove(opt);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var questionOption = await _context.QuestionOptions.FindAsync(id);
-            if (questionOption != null)
-            {
-                _context.QuestionOptions.Remove(questionOption);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        // Helper methods to convert images to Base64
-        private void ConvertImagesToBase64(IEnumerable<QuestionOption> options)
-        {
-            foreach (var option in options)
-            {
-                ConvertImageToBase64(option);
-            }
-        }
-
-        private void ConvertImageToBase64(QuestionOption option)
-        {
-            if (!string.IsNullOrEmpty(option.Image))
-            {
-                option.Image = ImageConverter.ConvertImagePathToBase64(option.Image);
-            }
+            return true;
         }
     }
 }

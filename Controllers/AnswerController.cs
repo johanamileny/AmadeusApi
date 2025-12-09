@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using AmadeusApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

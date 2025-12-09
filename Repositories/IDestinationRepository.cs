@@ -1,13 +1,17 @@
-using AMADEUSAPI.Models;
+using AmadeusApi.Models;
 
-namespace Amadeus.Repositories;
-
-public interface IDestinationRepository
+namespace AmadeusApi.Repositories
 {
-    Task<IEnumerable<Destination>> GetAllDestinations();
-    Task<Destination> GetDestinationById(int id);
-    Task AddDestination(Destination destination);
-    Task UpdateDestination(Destination destination);
-    Task DeleteDestination(int id);
-    Task<Destination?> GetDestinationByCombination(string combination);
+    public interface IDestinationRepository
+    {
+        Task<List<Destination>> GetAllDestinations();
+        Task<Destination?> GetDestinationById(int id);
+        Task<Destination?> GetDestinationByCombination(string combination);
+        Task<Destination> AddDestination(Destination d);
+        Task<Destination> UpdateDestination(Destination d);
+        Task<bool> DeleteDestination(int id);
+        Task<List<string>> GetAllCombinations();
+        Task<int> GetDestinationCount();
+        Task<List<Destination>> GetAllDestinationsWithCities();
+    }
 }

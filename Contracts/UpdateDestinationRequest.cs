@@ -1,4 +1,4 @@
-namespace AMADEUSAPI.Contracts
+namespace Amadeus.Contracts
 {
     public class UpdateDestinationRequest
     {

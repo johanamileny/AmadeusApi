@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmadeusApi.Models;
 using System.Threading.Tasks;
 
 public interface IAnswerService

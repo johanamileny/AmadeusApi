@@ -1,9 +1,9 @@
-using Amadeus.Models;
-using Amadeus.Repositories;
+using AmadeusApi.Models;
+using AmadeusApi.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Amadeus.Services
+namespace AmadeusApi.Services
 {
     public class QuestionOptionService
     {

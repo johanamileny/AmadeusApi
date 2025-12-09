@@ -1,52 +1,35 @@
-using Amadeus.Repositories;
-using AMADEUSAPI.Models;
-using Microsoft.EntityFrameworkCore;
+using AmadeusApi.Models;
+using AmadeusApi.Repositories;
 
-public class CityService
+namespace AmadeusApi.Services
 {
-    private readonly CityRepository _cityRepository;
-
-    public CityService(CityRepository cityRepository)
+    public class CityService
     {
-        _cityRepository = cityRepository;
-    }
+        private readonly CityRepository _cityRepository;
 
-    public async Task<IEnumerable<City>> GetAllCities()
-    {
-        return await _cityRepository.GetAllCities();
-    }
-
-    public async Task<City> GetCityById(int id)
-    {
-        return await _cityRepository.GetCityById(id);
-    }
-
-    public async Task<City> GetCityByName(string name)
-    {
-        var city = await _cityRepository.GetCityByName(name);
-        
-        if (city != null && !string.IsNullOrEmpty(city.ImagePath))
+        public CityService(CityRepository cityRepository)
         {
-            // Convert image to base64 using existing utility
-            city.ImagePath = AmadeusApi.Utils.ImageConverter.ConvertImagePathToBase64(city.ImagePath);
+            _cityRepository = cityRepository;
         }
-        
-        return city ?? throw new KeyNotFoundException($"City with name {name} not found.");
-    }
 
-    public async Task CreateCity(string description)
-    {
-        var city = new City { Description = description };
-        await _cityRepository.AddCity(city);
-    }
+        public async Task<List<City>> GetAllCitiesAsync()
+        {
+            return await _cityRepository.GetAllCitiesAsync();
+        }
 
-    public async Task UpdateCity(City city)
-    {
-        await _cityRepository.UpdateCity(city);
-    }
+        public async Task<City?> GetCityByIdAsync(int id)
+        {
+            return await _cityRepository.GetByIdAsync(id);
+        }
 
-    public async Task DeleteCity(int id)
-    {
-        await _cityRepository.DeleteCity(id);
+        public async Task<City?> GetCityByNameAsync(string name)
+        {
+            return await _cityRepository.GetByNameAsync(name);
+        }
+
+        public async Task<City> CreateCityAsync(City city)
+        {
+            return await _cityRepository.CreateAsync(city);
+        }
     }
 }

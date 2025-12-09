@@ -1,4 +1,5 @@
-namespace AMADEUSAPI.Models
+using System.ComponentModel.DataAnnotations;
+namespace AmadeusApi.Models
 {
     public class City
     {

@@ -1,8 +1,9 @@
-using Amadeus.Models;
+using AmadeusApi.Models;
+using AmadeusApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace Amadeus.Controllers;
+namespace AmadeusApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

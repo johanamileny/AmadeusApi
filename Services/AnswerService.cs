@@ -1,67 +1,23 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Amadeus.Repositories;
-using Microsoft.Extensions.Logging;
+using AmadeusApi.Models;
+using AmadeusApi.Repositories;
 
-public class AnswerService : IAnswerService
+namespace AmadeusApi.Services
 {
-    private readonly IAnswerRepository _answerRepository;
-    private readonly ILogger<AnswerService> _logger; 
-
-    public AnswerService(IAnswerRepository answerRepository, ILogger<AnswerService> logger)
+    public class AnswerService
     {
-        _answerRepository = answerRepository;
-        _logger = logger; 
-    }
+        private readonly IAnswerRepository _answerRepository;
 
-    public async Task<IEnumerable<Answer>> GetAllAnswersAsync()
-    {
-        return await _answerRepository.GetAllAsync();
-    }
-
-    public async Task<Answer?> GetAnswerByIdAsync(int id)
-    {
-        return await _answerRepository.GetByIdAsync(id);
-    }
-
-    public async Task AddAnswerAsync(Answer answer)
-    {
-        await _answerRepository.AddAsync(answer);
-    }
-
-    public async Task<bool> UpdateAnswerAsync(Answer answer)
-    {
-        try
+        public AnswerService(IAnswerRepository answerRepository)
         {
-            var existingAnswer = await _answerRepository.GetByIdAsync(answer.Id);
-            if (existingAnswer == null)
-                return false;
+            _answerRepository = answerRepository;
+        }
 
-            await _answerRepository.UpdateAsync(answer);
-            return true;
-        }
-        catch (Exception ex)
+        public async Task<Answer> CreateAnswerAsync(Answer answer)
         {
-            _logger.LogError(ex, "Error updating Answer"); 
-            throw new Exception("Error updating Answer.");
+            return await _answerRepository.CreateAsync(answer);
         }
-    }
 
-    public async Task<bool> DeleteAnswerAsync(int id)
-    {
-        try
-        {
-            var existingAnswer = await _answerRepository.GetByIdAsync(id);
-            if (existingAnswer == null)
-                return false;
-
-            await _answerRepository.DeleteAsync(id);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting Answer"); 
-            throw new Exception("Error deleting Answer.");
-        }
+        public Task<List<Answer>> GetUserAnswersAsync(int userId) =>
+            _answerRepository.GetByUserIdAsync(userId);
     }
 }

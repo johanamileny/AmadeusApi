@@ -1,95 +1,38 @@
-using Amadeus.Models;
-using Amadeus.Repositories;
+using AmadeusApi.Models;
+using AmadeusApi.Repositories;
 
-public class QuestionService
+namespace AmadeusApi.Services
 {
-    // Inyeccion de dependencias (Depende del repositorio)
-    private readonly QuestionRepository _questionRepository;
-
-    public QuestionService(QuestionRepository questionRepository)
+    public class QuestionService
     {
-        _questionRepository  = questionRepository;
-    }
+        private readonly QuestionRepository _questionRepository;
 
-
-    // TODO Read
-    public async Task<IEnumerable<Question>> GetAll()
-    {
-        return await _questionRepository.GetAll();
-    }
-
-    public async Task<Question> GetQuestionId(int id)
-    {
-        try
+        public QuestionService(QuestionRepository questionRepository)
         {
-            return await _questionRepository.GetQuestionId(id);
+            _questionRepository = questionRepository;
         }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
 
-    public async Task<Question> GetQuestionText(string question_text)
-    {
-        try
-        {
-            return await _questionRepository.GetQuestionText(question_text);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
+        public Task<List<Question>> GetAll() =>
+            _questionRepository.GetAll();
 
+        public Task<Question?> GetQuestionId(int id) =>
+            _questionRepository.GetQuestionId(id);
 
+        public Task<Question?> GetQuestionText(string text) =>
+            _questionRepository.GetQuestionText(text);
 
+        // Alias requerido por el controlador
+        public Task<Question> CreateQuestion(Question q) =>
+            _questionRepository.CreateQuestions(q);
 
-    // TODO Create
-    public async Task<Question> CreateQuestion(Question question)
-    {
-        try
-        {
-            return await _questionRepository.CreateQuestions(question);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-        
-    }
+        public Task<Question> CreateQuestions(Question q) =>
+            _questionRepository.CreateQuestions(q);
 
+        public Task<Question> UpdateQuestion(Question q) =>
+            _questionRepository.UpdateQuestion(q);
 
-    // TODO Update
-    public async Task<Question> UpdateQuestion(Question question)
-    {
-        try
-        {
-            return await _questionRepository.UpdateQuestion(question);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-
-    // TODO Delete
-    public async Task<Question> DeleteQuestion(int id)
-    {
-        // Comprobar que exista
-        var user = await _questionRepository.GetQuestionId(id);
-        if (user == null)
-        {
-            throw new Exception("User not found");
-        }
-        try
-        {
-            return await _questionRepository.DeleteQuestion(id);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+        // Ahora devuelve la entidad eliminada (o null)
+        public Task<Question?> DeleteQuestion(int id) =>
+            _questionRepository.DeleteQuestion(id);
     }
 }

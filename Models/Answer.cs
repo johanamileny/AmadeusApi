@@ -1,14 +1,29 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Answer
+namespace AmadeusApi.Models
 {
-    public int Id { get; set; }
+    public class Answer
+    {
+        public int Id { get; set; }
 
-    public int UserId { get; set; }
+        [Required]
+        public int UserId { get; set; }
 
-    public int QuestionId { get; set; }
+        [Required]
+        public int QuestionId { get; set; }
 
-    public int QuestionOptionId { get; set; }
+        [Required]
+        public int QuestionOptionId { get; set; }
 
-    public DateTime Date { get; set; } = DateTime.UtcNow;
+        public DateTime AnsweredAt { get; set; } = DateTime.UtcNow;
+        public string? UserAgent { get; set; }
+        public string? IpAddress { get; set; }
+        public int? SessionId { get; set; }
+
+        // navegación
+        public User User { get; set; } = null!;
+        public Question Question { get; set; } = null!;
+        public QuestionOption QuestionOption { get; set; } = null!;
+    }
 }

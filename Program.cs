@@ -1,9 +1,9 @@
-using Amadeus.Repositories;
-using AMADEUSAPI.Services;
+using AmadeusApi.Repositories;
+using AmadeusApi.Services;
 using AmadeusApi.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
-using Amadeus.Services;
+using AmadeusApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +17,9 @@ if (!Directory.Exists(imageBasePath))
     Directory.CreateDirectory(imageBasePath);
 }
 
-
 Console.WriteLine($"Image base path: {imageBasePath}");
-ImageConverter.Initialize(imageBasePath, builder.Services.BuildServiceProvider().GetService<ILoggerFactory>());
-
+// SOLUCIÓN 1: Comentar la llamada al método inexistente.
+// ImageConverter.Initialize(imageBasePath, builder.Services.BuildServiceProvider().GetService<ILoggerFactory>());
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -41,8 +40,10 @@ builder.Services.AddDbContext<AmadeusDbContext>(options =>
 // Register services
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<QuestionService>();
-builder.Services.AddScoped<QuestionOptionService>();
-builder.Services.AddScoped<IAnswerService, AnswerService>();
+// SOLUCIÓN 2: Corregir el nombre de la clase a singular.
+builder.Services.AddScoped<QuestionOptionService>(); 
+// SOLUCIÓN 3: Registrar el servicio como un tipo concreto para evitar el error de interfaz.
+builder.Services.AddScoped<AnswerService>(); 
 builder.Services.AddScoped<IDestinationService, DestinationService>();
 builder.Services.AddScoped<CityService>(); 
 

@@ -1,109 +1,30 @@
-using Amadeus.Models;
-using Amadeus.Repositories;
+using AmadeusApi.Models;
+using AmadeusApi.Repositories;
 
-public class UserService
+namespace AmadeusApi.Services
 {
-    // Inyeccion de dependencias (Depende del repositorio)
-    private readonly UserRepository _userRepository;
-
-    public UserService(UserRepository userRepository)
+    public class UserService
     {
-        _userRepository = userRepository;
-    }
+        private readonly UserRepository _userRepository;
 
+        public UserService(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
-    // TODO Read
-    public async Task<IEnumerable<User>> GetAll()
-    {
-        return await _userRepository.GetAll();
-    }
+        public Task<List<User>> GetAll() => _userRepository.GetAll();
+        public Task<User?> GetUserId(int id) => _userRepository.GetUserId(id);
+        public Task<User?> GetUserEmail(string email) => _userRepository.GetUserEmail(email);
+        public Task<User?> GetUserName(string userName) => _userRepository.GetUserName(userName);
+        public Task<User> CreateUser(User user) => _userRepository.CreateUser(user);
+        public Task<User> UpdateUser(User user) => _userRepository.UpdateUser(user);
 
-    public async Task<User> GetUserId(int id)
-    {
-        try
+        // Devuelve el usuario eliminado (o null) en lugar de Task<bool>
+        public async Task<User?> DeleteUser(int id)
         {
-            return await _userRepository.GetUserId(id);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-    public async Task<User> GetUserEmail(string email)
-    {
-        try
-        {
-            return await _userRepository.GetUserEmail(email);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-    public async Task<User> GetUserName(string full_name)
-    {
-        try
-        {
-            return await _userRepository.GetUserName(full_name);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-
-    // TODO Create
-    public async Task<User> CreateUser(User user)
-    {
-        // Si el usuario es menor a 18 no crear
-        // if (user.age < 18)
-        // {
-        //     throw new Exception("User is under 18 years old");
-        // }
-        try
-        {
-            return await _userRepository.CreateUser(user);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-
-    // TODO Update
-    public async Task<User> UpdateUser(User user)
-    {
-        try
-        {
-            return await _userRepository.UpdateUser(user);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-
-    // TODO Delete
-    public async Task<User> DeleteUser(int id)
-    {
-        // Comprobar que exista
-        var user = await _userRepository.GetUserId(id);
-        if (user == null)
-        {
-            throw new Exception("User not found");
-        }
-        try
-        {
-            return await _userRepository.DeleteUser(id);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
+            var user = await _userRepository.GetUserId(id);
+            var ok = await _userRepository.DeleteUser(id);
+            return ok ? user : null;
         }
     }
 }
