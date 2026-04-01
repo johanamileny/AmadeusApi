@@ -31,11 +31,10 @@ namespace AmadeusApi.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        // Llamado por UserService.GetUserName
-        public Task<User?> GetUserName(string userName)
+        // SOLUCIÓN: Renombramos y corregimos el método para buscar por 'Name'.
+        public async Task<User?> GetUserByName(string name)
         {
-            // Tu modelo no tiene UserName; devolvemos null sin romper compilación
-            return Task.FromResult<User?>(null);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Name == name);
         }
 
         // Llamado por UserService.CreateUser

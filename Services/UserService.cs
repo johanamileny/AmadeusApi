@@ -15,7 +15,7 @@ namespace AmadeusApi.Services
         public Task<List<User>> GetAll() => _userRepository.GetAll();
         public Task<User?> GetUserId(int id) => _userRepository.GetUserId(id);
         public Task<User?> GetUserEmail(string email) => _userRepository.GetUserEmail(email);
-        public Task<User?> GetUserName(string userName) => _userRepository.GetUserName(userName);
+        public Task<User?> GetUserByName(string name) => _userRepository.GetUserByName(name);
         public Task<User> CreateUser(User user) => _userRepository.CreateUser(user);
         public Task<User> UpdateUser(User user) => _userRepository.UpdateUser(user);
 
